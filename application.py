@@ -1,5 +1,5 @@
 import os
-import requests
+# import requests
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
@@ -51,3 +51,5 @@ def index():
     print(username + password)
     return render_template("index.html")
 
+# @app.route("/signin")
+# def signin():

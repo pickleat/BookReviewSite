@@ -1,6 +1,6 @@
 import os
 # import requests
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, session, render_template, request, redirect, url_for, escape
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -44,12 +44,29 @@ db = scoped_session(sessionmaker(bind=engine))
 # print('Visit this URL in your browser: ' + authorize_url)
 
 
-@app.route("/")
-def index():
-    username = request.form.get("username")
-    password = request.form.get("password")
-    print(username + password)
-    return render_template("index.html")
+# Set the secret key to some random bytes. Keep this really secret!
+app.secret_key = os.getenv("SECRET_KEY")
 
-# @app.route("/signin")
-# def signin():
+@app.route('/')
+def index():
+    if 'username' in session:
+        return 'Logged in as %s' % escape(session['username'])
+    return 'You are not logged in'
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return redirect(url_for('index'))
+    return '''
+        <form method="post">
+            <p><input type=text name=username>
+            <p><input type=submit value=Login>
+        </form>
+    '''
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    session.pop('username', None)
+    return redirect(url_for('index'))

@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+<div class="container">
+Sign In Page
+</div>    
+{% endblock %}
+
+{% block body %}
+<div class="container"></div>
+    <h2>Enter your username and password.</h2>
+    <form method="post">
+            <p><input type=text name=username placeholder="username">
+            <p><input type="password" name=password placeholder="password">
+            <p><input type=submit value=Login>
+        </form>
+</div>
+{% endblock %}

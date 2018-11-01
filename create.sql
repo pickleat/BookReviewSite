@@ -8,10 +8,10 @@ CREATE table books(
     isbn varchar not null,
     Title varchar not null,
     Author varchar not null, 
-    Year integer not null
+    Year int not null
 );
 
-insert into books(ISBN, Title, Author, Year) values(380795272, 'Krondor: The Betrayal', 'Raymond E. Feist', 1998)
+insert into books(ISBN, Title, Author, Year) values(380795272, 'Krondor: The Betrayal', 'Raymond E. Feist', '1998')
 
 
 

@@ -10,12 +10,14 @@ Web Programming with Python and JavaScript
 - [x] Initial Login/ needs better functionality. 
 - [x] Login Database: created user database, but probably not in its complete form. Jsust a simple username/password/id setup currently. 
 - [x] Not logged in redirect to login/registration page
-- [ ] Hash - Saved passwords? more research?
-- [ ] Registration - check if username is taken or not. Make it an email for ease, also how to passwords work? Should we generate a secure password, and if so do we email it or just post it? Lots to research here. 
+- [x] Registration - check if username is taken or not. 
+- [ ] Passwords
+    - [ ] Hash - How to hash/encrypt/decrypt?
+    - [ ] Reset? - How to reset without manually looking up password in database? 
 
 **Import Books.csv**
 > Import: Provided for you in this project is a file called books.csv, which is a spreadsheet in CSV format of 5000 different books. Each one has an ISBN nubmer, a title, an author, and a publication year. In a Python file called import.py separate from your web application, write a program that will take the books and import them into your PostgreSQL database. You will first need to decide what table(s) to create, what columns those tables should have, and how they should relate to one another. Run this program by running python3 import.py to import the books into your database, and submit this program with the rest of your project code.
-- [ ] Import.py 85% finished, does not format 'year' correctly
+- [x] Import.py finished. Had to figure out how to skip the initial header lines. Although, there may be a future issue with the ISBN's as some have an "X" in the final value.
 **Search**
 > Search: Once a user has logged in, they should be taken to a page where they can search for a book. Users should be able to type in the ISBN number of a book, the title of a book, or the author of a book. After performing the search, your website should display a list of possible matching results, or some sort of message if there were no matches. If the user typed in only part of a title, ISBN, or author name, your search page should find matches for those as well!
 - [ ] Search via ISBN/Title/Author/Year, should dynamically respond with appropriate title(s)

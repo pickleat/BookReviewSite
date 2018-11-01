@@ -1,6 +1,6 @@
 import os
 # import requests
-from flask import Flask, session, render_template, request, redirect, url_for, escape
+from flask import Flask, session, render_template, request, redirect, url_for, escape, flash
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -63,6 +63,19 @@ def logout():
     session.pop('username', None)
     return render_template('logout.html')
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    render_template('register.html')
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        try: 
+            db.execute('INSERT INTO users (username, password) VALUES (:username, :password)',
+            {'username': username, 'password': password})
+            db.commit()        
+        except:
+            flash('username taken, try another, or if this is your username, go to the sign in page')
+            return redirect(url_for('register'))
+        flash("You've successfully registered")
+        session['username'] = request.form['username']
+        return redirect(url_for('index'))
+    return render_template('register.html')

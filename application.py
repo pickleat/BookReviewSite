@@ -46,8 +46,13 @@ db = scoped_session(sessionmaker(bind=engine))
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = os.getenv("SECRET_KEY")
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        session['search'] = request.form['search']
+        session['column'] = request.form['column']
+        return redirect(url_for('results'))
+    # return render_template('index.html') #redirect(url_for('results'))
     return render_template('index.html') 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -56,6 +61,7 @@ def login():
         session['username'] = request.form['username']
         return redirect(url_for('index'))
     return render_template('login.html')
+
 
 @app.route('/logout')
 def logout():
@@ -79,3 +85,10 @@ def register():
         session['username'] = request.form['username']
         return redirect(url_for('index'))
     return render_template('register.html')
+
+@app.route('/results')
+def results():
+    """Lists all books"""
+    query = db.execute("Select * from books where " + session['column'] + " = '" + session['search'] + "'").fetchall()
+    # query = db.execute('Select * from books where :column = :search', {'column': session['column'], 'search': session['search']}).fetchall()
+    return render_template('results.html', query=query)

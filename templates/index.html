@@ -9,7 +9,19 @@
 {% block body %}
 <div>
         {% if 'username' in session: %}
-        <p>Logged in as {{ session['username'] }} </p>
+        <p>Logged in as {{ session['username'] }} 
+        <h2>Enter an Author, Title or ISBN</h2>
+            <form method="POST">
+                <p><input type=text name=search placeholder="Enter text">
+                <p><input type="radio" id="author" name="column" value="author" />
+                <label for="author">Author</label>
+                <p><input type="radio" id="author" name="column" value="Title" />
+                <label for="Title">Title</label>
+                <p><input type="radio" id="ISBN" name="column" value="ISBN" />
+                <label for="ISBN">ISBN</label>
+                <p><input type=submit value=Search>
+            </form>
+        </p>
         {% else %}
         <p>Click <a href="/login">Here</a> to login.</p>
         {% endif %}

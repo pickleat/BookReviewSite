@@ -22,17 +22,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# import csv
-
-# with open('all16.csv', 'r', newline='') as file:
-#     has_header = csv.Sniffer().has_header(file.read(1024))
-#     file.seek(0)  # Rewind.
-#     reader = csv.reader(file)
-#     if has_header:
-#         next(reader)  # Skip header row.
-#     column = 1
-#     datatype = float
-#     data = (datatype(row[column]) for row in reader)
-#     least_value = min(data)

@@ -8,7 +8,8 @@
 
 {% block body %}
 <div>
-        <h2>You searched for {{ session['column']}}: {{ session['search'] }}</h2>
+        {% for item in book %}
+        <h2>Welcome to the page for {{ item.title }}</h2>
     <table style="width:50%">
         <tr>
             <th>Title</th>
@@ -17,7 +18,7 @@
             <th>ISBN</th>
         </tr>
         
-        {% for item in query %}
+        
         <tr>
         <td>{{ item.title }}</td>
         <td>{{ item.author }}</td>

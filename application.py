@@ -88,7 +88,12 @@ def register():
 
 @app.route('/results')
 def results():
-    """Lists all books"""
-    query = db.execute("Select * from books where " + session['column'] + " = '" + session['search'] + "'").fetchall()
-    # query = db.execute('Select * from books where :column = :search', {'column': session['column'], 'search': session['search']}).fetchall()
+    """Lists queried items"""
+    query = db.execute("Select * from books where " + session['column'] + " ilike '%" + session['search'] + "%'").fetchall()
     return render_template('results.html', query=query)
+
+@app.route('/<isbn_variable>')
+def book(isbn_variable):
+    """Creates a Book page for a specific book by ISBN"""
+    book = db.execute("Select * from books where isbn = '" + isbn_variable + "'").fetchall()
+    return render_template('result.html', book=book)

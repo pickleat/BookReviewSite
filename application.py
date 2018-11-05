@@ -58,8 +58,15 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session['username'] = request.form['username']
-        return redirect(url_for('index'))
+        user = request.form['username']
+        password = request.form['password']
+        auth = db.execute("SELECT * FROM users where username = '" + user + "' AND password = '" + password + "'")
+        for item in auth:
+            if str(item[0]) == user and str(item[1]) == password:
+                session['username'] = request.form['username']
+                return redirect(url_for('index'))
+        else:
+            flash('username and/or password does not match')
     return render_template('login.html')
 
 
@@ -96,4 +103,9 @@ def results():
 def book(isbn_variable):
     """Creates a Book page for a specific book by ISBN"""
     book = db.execute("Select * from books where isbn = '" + isbn_variable + "'").fetchall()
+    if request.method == 'GET':
+        review = db.execute("")
+        flash('Review Submitted')
+        return render_template('result.html', book=book)    
+    
     return render_template('result.html', book=book)

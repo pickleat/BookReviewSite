@@ -23,9 +23,38 @@
         <td>{{ item.title }}</td>
         <td>{{ item.author }}</td>
         <td>{{ item.year }}</td>
-        <td><a href="/{{ item.isbn }}">{{ item.isbn }}</a></td>
+        <td>{{ item.isbn }}</a></td>
         </tr>
         {% endfor %}
     </table>
+    <h2>Would you like to submit a review for this book?</h2>
+    <form>
+        <div>
+            <p>Rate the book from 1-5:</p>
+            <input type="radio" id="number" name="1" value="1" />
+            <label for="number"> 1</label>
+            <input type="radio" id="number" name="2" value="2" />
+            <label for="number"> 2</label>
+            <input type="radio" id="number" name="3" value="3" />
+            <label for="number"> 3</label>
+            <input type="radio" id="number" name="4" value="4" />
+            <label for="number"> 4</label>
+            <input type="radio" id="number" name="5" value="5" />
+            <label for="number"> 5</label>
+            <p>
+            <input style="width:50%" type="text" id='rating' placeholder="Type your thoughts on the book">
+            </p>
+            <p><input type=submit value=Search>
+        </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <p class=flashes style=color:green>
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+            </p>
+        {% endif %}
+        {% endwith %}
+    </form>
 </div>
 {% endblock %}

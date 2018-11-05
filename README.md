@@ -20,13 +20,25 @@ Web Programming with Python and JavaScript
 - [x] Import.py finished. Had to figure out how to skip the initial header lines. Although, there may be a future issue with the ISBN's as some have an "X" in the final value.
 **Search**
 > Search: Once a user has logged in, they should be taken to a page where they can search for a book. Users should be able to type in the ISBN number of a book, the title of a book, or the author of a book. After performing the search, your website should display a list of possible matching results, or some sort of message if there were no matches. If the user typed in only part of a title, ISBN, or author name, your search page should find matches for those as well!
-- [ ] Search via ISBN/Title/Author/Year, should dynamically respond with appropriate title(s)
+- [x] Search via ISBN/Title/Author, should dynamically respond with appropriate title(s) 
+Note: not sure the database function is working perfectly. Used '%' for the before and after as well as 'ilike' but it doesn't perfectly return all searched results. 
+
 **Book Page**
 > Book Page: When users click on a book from the results of the search page, they should be taken to a book page, with details about the book: its title, author, publication year, ISBN number, and any reviews that users have left for the book on your website.
-- [ ] Add Todos :smile:
+- [x] Dynamically return page based on book's ISBN. 
+- [ ] Pull all and display user avg review and number of reviews from Goodreads API.
+- [ ] Display all previous reviews submitted through my site. 
+- [ ] Add review form: Done, but not particularly happy with it. 
+
 **Review Submission**
 > Review Submission: On the book page, users should be able to submit a review: consisting of a rating on a scale of 1 to 5, as well as a text component to the review where the user can write their opinion about a book. Users should not be able to submit multiple reviews for the same book.
-- [ ] Add Todos :smile:
+- [ ] Create Review Submission Database, it should:
+    - [ ] Allow a user to submit a review but only ONE. 
+    Currently review database architecture: 
+            |    reviews     |
+    ___________________________________    
+    ISBN     | user id | star review | text review
+    ___________________________________
 **GoodReads API Integration**
 >Goodreads Review Data: On your book page, you should also display (if available) the average rating and number of ratings the work has received from Goodreads.
 >API Access: If users make a GET request to your website’s /api/<isbn> route, where <isbn> is an ISBN number, your website should return a JSON response containing the book’s title, author, publication date, ISBN number, review count, and average score. The resulting JSON should follow the format:
@@ -39,7 +51,7 @@ Web Programming with Python and JavaScript
     "average_score": 5.0
 }"""
 > If the requested ISBN number isn’t in your database, your website should return a 404 error.
-
+- [ ] need to research how to integrate with api, but currently have a hunch that a curl request and a concatenated string build should work.
 
 **Other Info**
 You should be using raw SQL commands (as via SQLAlchemy’s execute method) in order to make database queries. You should not use the SQLAlchemy ORM (if familiar with it) for this project.

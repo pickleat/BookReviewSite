@@ -14,5 +14,14 @@ Sign In Page
             <p><input type="password" name=password placeholder="password">
             <p><input type=submit value=Login>
         </form>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <p class=flashes style=color:red>
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+            </p>
+        {% endif %}
+        {% endwith %}
 </div>
 {% endblock %}

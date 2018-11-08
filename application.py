@@ -1,11 +1,11 @@
 import os
-# import requests
+import requests
 from flask import Flask, session, render_template, request, redirect, url_for, escape, flash
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from rauth.service import OAuth1Service, OAuth1Session
-
+import json
 app = Flask(__name__)
 
 
@@ -23,24 +23,24 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
-# # Get a real consumer key & secret from: https://www.goodreads.com/api/keys
-# CONSUMER_KEY = 'B5C9TI2uE44xXNV76cDg'
-# CONSUMER_SECRET = 'abXw3Ondy6TVDVdpe1qrObnjIm3wzDWeh0EMyzAWGM'
+# Get a real consumer key & secret from: https://www.goodreads.com/api/keys
+CONSUMER_KEY = 'zpujku3fRCT0dBhaSF4lA'
+CONSUMER_SECRET = 'BYbhjlnYBrZ5GoNxwryF7u6KMdDJMt2pvV4f0xaQ5g'
 
-# goodreads = OAuth1Service(
-#     consumer_key=CONSUMER_KEY,
-#     consumer_secret=CONSUMER_SECRET,
-#     name='goodreads',
-#     request_token_url='https://www.goodreads.com/oauth/request_token',
-#     authorize_url='https://www.goodreads.com/oauth/authorize',
-#     access_token_url='https://www.goodreads.com/oauth/access_token',
-#     base_url='https://www.goodreads.com/'
-#     )
+goodreads = OAuth1Service(
+    consumer_key=CONSUMER_KEY,
+    consumer_secret=CONSUMER_SECRET,
+    name='goodreads',
+    request_token_url='https://www.goodreads.com/oauth/request_token',
+    authorize_url='https://www.goodreads.com/oauth/authorize',
+    access_token_url='https://www.goodreads.com/oauth/access_token',
+    base_url='https://www.goodreads.com/'
+    )
 
-# # head_auth=True is important here; this doesn't work with oauth2 for some reason
-# request_token, request_token_secret = goodreads.get_request_token(header_auth=True)
+# head_auth=True is important here; this doesn't work with oauth2 for some reason
+request_token, request_token_secret = goodreads.get_request_token(header_auth=True)
 
-# authorize_url = goodreads.get_authorize_url(request_token)
+authorize_url = goodreads.get_authorize_url(request_token)
 # print('Visit this URL in your browser: ' + authorize_url)
 
 # Set the secret key to some random bytes. Keep this really secret!
@@ -99,13 +99,37 @@ def results():
     query = db.execute("Select * from books where " + session['column'] + " ilike '%" + session['search'] + "%'").fetchall()
     return render_template('results.html', query=query)
 
-@app.route('/<isbn_variable>')
+@app.route('/<isbn_variable>', methods=['Get', 'POST'])
 def book(isbn_variable):
     """Creates a Book page for a specific book by ISBN"""
     book = db.execute("Select * from books where isbn = '" + isbn_variable + "'").fetchall()
-    if request.method == 'GET':
-        review = db.execute("")
-        flash('Review Submitted')
-        return render_template('result.html', book=book)    
+    data = {"format":"json", "user_id": "25884519", "isbn":isbn_variable}
+    goodreadsreviews = requests.get("https://www.goodreads.com/book/isbn/" + isbn_variable + "?key=" + CONSUMER_KEY, data)
     
-    return render_template('result.html', book=book)
+    # this is "working, but still isn't formatted correctly"
+    print(goodreadsreviews.status_code)
+    passit = goodreadsreviews.json()
+    for key in passit:
+        if key == "reviews_widget":
+            stuff = passit['reviews_widget']
+            # print(stuff)
+    reviews = db.execute("Select * from reviews where isbn = '" + isbn_variable + "'").fetchall()
+    if request.method == 'POST':
+        user = session['username']
+        stars = request.form['stars']
+        review = request.form['review']
+        try:
+            db.execute('INSERT into reviews (username, isbn, stars, review) VALUES (:username, :isbn, :stars, :review)',
+            {"username": user, "isbn": isbn_variable, "stars": stars, "review": review})
+            db.commit()
+            flash('Review Submitted')
+        except:
+            flash("You've already submitted a review for this book")
+            # return render_template('result.html', book=book)  
+        return render_template('result.html', book=book, reviews=reviews, stuff=stuff)
+    
+    return render_template('result.html', book=book, reviews=reviews, stuff=stuff)
+
+# @app.route('/api/<isbn_variable>')
+# def goodreads(isbn_variable):
+#     """Calls the Goodreads API and displays a JSON with """

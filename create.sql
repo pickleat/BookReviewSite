@@ -34,3 +34,13 @@ CREATE table reviews(
 insert into reviews(username, isbn, stars, review) values('andy@email.com', '0747263744', 1, 'this book was terrible');
     -- second should throw error because that book already has a review
 insert into reviews(username, isbn, stars, review) values('andy@email.com', '0747263744', 2, 'this book was not as terrible');
+
+
+-- finding average review stars
+SELECT
+ to_char(
+ AVG (stars),
+ '99'
+ ) AS average_amount
+FROM
+ reviews where isbn = '0449016196';

@@ -2,12 +2,15 @@
 
 {% block heading %}
 <div class="container">
-        Search Results
+        Book Page
 </div>     
 {% endblock %}
 
 {% block body %}
 <div>
+        {% if 'username' in session: %}
+        <p>Logged in as {{ session['username'] }} 
+        {% endif %}
         {% for item in book %}
         <h2>Welcome to the page for {{ item.title }}</h2>
     <table style="width:50%">
@@ -25,24 +28,44 @@
         <td>{{ item.year }}</td>
         <td>{{ item.isbn }}</a></td>
         </tr>
+    </table>
+    <h2> Reviews for {{ item.title }}</h2>
+        {% endfor %}
+        
+        
+    <table style="width:50%">
+        <tr>
+            <th>User</th>
+            <th>Stars</th>
+            <th>Review</th>
+        </tr>
+        
+        {% for rev in reviews %}
+        <tr>
+        <td>{{ rev.username }}</td>
+        <td>{{ rev.stars }}</td>
+        <td>{{ rev.review }}</td>
+        </tr>
         {% endfor %}
     </table>
-    <h2>Would you like to submit a review for this book?</h2>
-    <form>
+    {{ grr }}
+    
+    <h2>Submit your own review for this book:</h2>
+    <form method="POST">
         <div>
             <p>Rate the book from 1-5:</p>
-            <input type="radio" id="number" name="1" value="1" />
-            <label for="number"> 1</label>
-            <input type="radio" id="number" name="2" value="2" />
-            <label for="number"> 2</label>
-            <input type="radio" id="number" name="3" value="3" />
-            <label for="number"> 3</label>
-            <input type="radio" id="number" name="4" value="4" />
-            <label for="number"> 4</label>
-            <input type="radio" id="number" name="5" value="5" />
-            <label for="number"> 5</label>
+            <input type="radio" id="number" name="stars" value="1" />
+            <label for="number">⭐️</label><br>
+            <input type="radio" id="number" name="stars" value="2" />
+            <label for="number">️️⭐️⭐️</label><br>
+            <input type="radio" id="number" name="stars" value="3" />
+            <label for="number">⭐️⭐️⭐️</label><br>
+            <input type="radio" id="number" name="stars" value="4" />
+            <label for="number">⭐️⭐️⭐️⭐️</label><br>
+            <input type="radio" id="number" name="stars" value="5" />
+            <label for="number">⭐️⭐️⭐️⭐️⭐️</label>
             <p>
-            <input style="width:50%" type="text" id='rating' placeholder="Type your thoughts on the book">
+            <input style="width:50%" type="text" name="review" id='review' placeholder="Type your thoughts on the book">
             </p>
             <p><input type=submit value=Search>
         </div>
@@ -56,5 +79,14 @@
         {% endif %}
         {% endwith %}
     </form>
+    
+    <!-- {{% for key in passit % }}
+        {{% if key == "reviews_widget" %}}
+        Did not finish implementing
+        {% endif %}
+    {% endfor %} -->
+    <div>
+        {{ stuff }}
+    </div>
 </div>
 {% endblock %}

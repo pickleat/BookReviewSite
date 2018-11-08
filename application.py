@@ -41,7 +41,6 @@ goodreads = OAuth1Service(
 request_token, request_token_secret = goodreads.get_request_token(header_auth=True)
 
 authorize_url = goodreads.get_authorize_url(request_token)
-# print('Visit this URL in your browser: ' + authorize_url)
 
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = os.getenv("SECRET_KEY")
@@ -52,11 +51,11 @@ def index():
         session['search'] = request.form['search']
         session['column'] = request.form['column']
         return redirect(url_for('results'))
-    # return render_template('index.html') #redirect(url_for('results'))
     return render_template('index.html') 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # Sign in procedure, checks database for BOTH.
     if request.method == 'POST':
         user = request.form['username']
         password = request.form['password']
@@ -78,9 +77,11 @@ def logout():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    # allows user to choose username/password
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        # checks database for duplicate username entries, must be unique
         try: 
             db.execute('INSERT INTO users (username, password) VALUES (:username, :password)',
             {'username': username, 'password': password})
@@ -88,6 +89,7 @@ def register():
         except:
             flash('username taken, try another, or if this is your username, go to the sign in page')
             return redirect(url_for('register'))
+        # if username it registers user and automatically signs them in
         flash("You've successfully registered")
         session['username'] = request.form['username']
         return redirect(url_for('index'))
@@ -96,18 +98,23 @@ def register():
 @app.route('/results')
 def results():
     """Lists queried items"""
+    # performs queries and shows items with the searched text.
     query = db.execute("Select * from books where " + session['column'] + " ilike '%" + session['search'] + "%'").fetchall()
     return render_template('results.html', query=query)
 
 @app.route('/<isbn_variable>', methods=['Get', 'POST'])
 def book(isbn_variable):
     """Creates a Book page for a specific book by ISBN"""
+    # searches for book information in the database
     book = db.execute("Select * from books where isbn = '" + isbn_variable + "'").fetchall()
+    # makes API call to Goodreads for needed information
     APIcall = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": CONSUMER_KEY, "isbns": isbn_variable})
     stuff = APIcall.json()
     avg_rating = stuff['books'][0]['average_rating']
     ratings_count = stuff['books'][0]['ratings_count']
+    # searches for reviews in our review database
     reviews = db.execute("Select * from reviews where isbn = '" + isbn_variable + "'").fetchall()
+    # adds review for user if they haven't posted one yet. 
     if request.method == 'POST':
         user = session['username']
         stars = request.form['stars']
@@ -119,9 +126,7 @@ def book(isbn_variable):
             flash('Review Submitted')
         except:
             flash("You've already submitted a review for this book")
-            # return render_template('result.html', book=book)  
         return render_template('result.html', book=book, reviews=reviews, avg_rating=avg_rating, ratings_count=ratings_count)
-    
     return render_template('result.html', book=book, reviews=reviews, avg_rating=avg_rating, ratings_count=ratings_count)
 
 @app.route('/api/<isbn_variable>')
@@ -136,11 +141,14 @@ def goodreads(isbn_variable):
     "average_score": 5.0
     }
     """
+    # queries for information in our database, if not present, returns 404error.html page.
     query = db.execute("Select * from books where isbn = '" + isbn_variable + "'").fetchone()
     if query == None:
         return render_template('404error.html')
+    # makes API call for other information needed from goodreads.
     simpleAPICALL = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": CONSUMER_KEY, "isbns": isbn_variable})
     stuff = simpleAPICALL.json()
+    # makes dictionary version of data
     myJSON = {
         "title": query[1],
         "author": query[2], 
@@ -149,6 +157,6 @@ def goodreads(isbn_variable):
         "review_count": stuff['books'][0]['ratings_count'], 
         "average_score": stuff['books'][0]['average_rating']
         }
-
+    # converts dict to JSON
     myJSON = json.dumps(myJSON)
     return render_template('api.html', myJSON=myJSON)

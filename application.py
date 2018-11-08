@@ -103,16 +103,10 @@ def results():
 def book(isbn_variable):
     """Creates a Book page for a specific book by ISBN"""
     book = db.execute("Select * from books where isbn = '" + isbn_variable + "'").fetchall()
-    data = {"format":"json", "user_id": "25884519", "isbn":isbn_variable}
-    goodreadsreviews = requests.get("https://www.goodreads.com/book/isbn/" + isbn_variable + "?key=" + CONSUMER_KEY, data)
-    
-    # this is "working, but still isn't formatted correctly"
-    print(goodreadsreviews.status_code)
-    passit = goodreadsreviews.json()
-    for key in passit:
-        if key == "reviews_widget":
-            stuff = passit['reviews_widget']
-            # print(stuff)
+    APIcall = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": CONSUMER_KEY, "isbns": isbn_variable})
+    stuff = APIcall.json()
+    avg_rating = stuff['books'][0]['average_rating']
+    ratings_count = stuff['books'][0]['ratings_count']
     reviews = db.execute("Select * from reviews where isbn = '" + isbn_variable + "'").fetchall()
     if request.method == 'POST':
         user = session['username']
@@ -126,10 +120,35 @@ def book(isbn_variable):
         except:
             flash("You've already submitted a review for this book")
             # return render_template('result.html', book=book)  
-        return render_template('result.html', book=book, reviews=reviews, stuff=stuff)
+        return render_template('result.html', book=book, reviews=reviews, avg_rating=avg_rating, ratings_count=ratings_count)
     
-    return render_template('result.html', book=book, reviews=reviews, stuff=stuff)
+    return render_template('result.html', book=book, reviews=reviews, avg_rating=avg_rating, ratings_count=ratings_count)
 
-# @app.route('/api/<isbn_variable>')
-# def goodreads(isbn_variable):
-#     """Calls the Goodreads API and displays a JSON with """
+@app.route('/api/<isbn_variable>')
+def goodreads(isbn_variable):
+    """Calls our database AND the Goodreads API and displays a JSON with following structure:
+    {
+    "title": "Memory",
+    "author": "Doug Lloyd",
+    "year": 2015,
+    "isbn": "1632168146",
+    "review_count": 28,
+    "average_score": 5.0
+    }
+    """
+    query = db.execute("Select * from books where isbn = '" + isbn_variable + "'").fetchone()
+    if query == None:
+        return render_template('404error.html')
+    simpleAPICALL = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": CONSUMER_KEY, "isbns": isbn_variable})
+    stuff = simpleAPICALL.json()
+    myJSON = {
+        "title": query[1],
+        "author": query[2], 
+        "year": query[3], 
+        "isbn": query[0] , 
+        "review_count": stuff['books'][0]['ratings_count'], 
+        "average_score": stuff['books'][0]['average_rating']
+        }
+
+    myJSON = json.dumps(myJSON)
+    return render_template('api.html', myJSON=myJSON)

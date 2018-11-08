@@ -1,4 +1,4 @@
-
+-- These are the series of commands used to create the PostgreSQL Tables
 
 -- Books Table 
 CREATE table books(
@@ -8,11 +8,9 @@ CREATE table books(
     Year int not null
 );
 
--- Had to alter the table after the fact; used: 
+-- Had to alter the table after the fact; above reflects that, but I used: 
 ALTER TABLE books ADD UNIQUE (isbn);
 ALTER TABLE books ADD primary key (isbn);
-insert into books(ISBN, Title, Author, Year) values(380795272, 'Krondor: The Betrayal', 'Raymond E. Feist', '1998')
-
 
 -- User Table
 CREATE table users(
@@ -32,15 +30,5 @@ CREATE table reviews(
 
 -- test reviews table
 insert into reviews(username, isbn, stars, review) values('andy@email.com', '0747263744', 1, 'this book was terrible');
-    -- second should throw error because that book already has a review
+-- second should throw error because that book already has a review
 insert into reviews(username, isbn, stars, review) values('andy@email.com', '0747263744', 2, 'this book was not as terrible');
-
-
--- finding average review stars
-SELECT
- to_char(
- AVG (stars),
- '99'
- ) AS average_amount
-FROM
- reviews where isbn = '0449016196';

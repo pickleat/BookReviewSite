@@ -49,10 +49,12 @@
         </tr>
         {% endfor %}
     </table>
-    <div>
+    <div class="goodreads">
         <h2>Goodreads Reviews</h2>
-        Average Star Rating: {{ avg_rating }}<br>
-        Number of Ratings: {{ ratings_count }}
+        <ul>
+            <li>Average Star Rating: {{ avg_rating }}</li>
+            <li>Number of Ratings: {{ ratings_count }}</li>
+        </ul>
     </div>
     
     <h2>Submit your own review for this book:</h2>

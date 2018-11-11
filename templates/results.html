@@ -9,7 +9,12 @@
 {% block body %}
 <div>
         <h2>You searched for {{ session['column']}}: {{ session['search'] }}</h2>
-    <table style="width:50%">
+        {% if query == [] %}
+        <h3 style="color:firebrick"> Your search returned no results</h3>
+
+        {% else %}    
+    
+        <table style="width:50%">
         <tr>
             <th>Title</th>
             <th>Author</th>
@@ -17,15 +22,17 @@
             <th>ISBN</th>
         </tr>
         
-        {% for item in query %}
-        <tr>
-        <td><a href="/{{ item.isbn }}">{{ item.title }}</a></td>
-        <td>{{ item.author }}</td>
-        <td>{{ item.year }}</td>
-        <td><a href="/{{ item.isbn }}">{{ item.isbn }}</a></td>
-        </tr>
-        {% endfor %}
-    </table>
+            {% for item in query %}
+            <tr>
+            <td><a href="/{{ item.isbn }}">{{ item.title }}</a></td>
+            <td>{{ item.author }}</td>
+            <td>{{ item.year }}</td>
+            <td><a href="/{{ item.isbn }}">{{ item.isbn }}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
 </div>
 
 {% endblock %}

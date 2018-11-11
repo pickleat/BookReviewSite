@@ -1,0 +1,18 @@
+$HeadFont: 'Montserrat', sans-serif;
+$SecondFont:'Merriweather', serif;
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $HeadFont;
+}
+
+p {
+    font-family: $SecondFont;
+}
+
+body {
+    background-color: antiquewhite;
+}
+
+nav {
+    background-color: navy;
+}

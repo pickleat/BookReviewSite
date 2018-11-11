@@ -7,11 +7,11 @@ New User Registration
 {% endblock %}
 
 {% block body %}
-<div class="container"></div>
+<div class="container">
     <h2>Enter your email and password.</h2>
-    <!-- Below is not finished to be implemented. Need to learn about POST/GET and accessing info -->
+    <p>Please do not choose a username/password you've used anywhere else, the purpose of this site is not to learn securty the usernames/passwords are NOT encrypted.</p>
     <form method="post">
-            <p><input type=text name=username placeholder="email">
+            <p><input type=text name=username placeholder="username">
             <p><input type="password" name=password placeholder="password">
             <p><input type=submit value=Login>
         </form>

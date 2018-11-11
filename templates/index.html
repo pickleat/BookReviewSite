@@ -2,7 +2,8 @@
 
 {% block heading %}
 <div class="container">
-        Homepage
+        <h1>Welcome to my Book Review Site</h1>
+        <p>Sign In/Up and Search for a Book in the Database!</p>
 </div>     
 {% endblock %}
 
@@ -13,10 +14,10 @@
         <h2>Enter an Author, Title or ISBN</h2>
             <form method="POST">
                 <p><input type=text name=search placeholder="Enter text">
+                <p><input type="radio" id="author" name="column" value="Title" checked="checked"/>
+                <label for="Title">Title</label>
                 <p><input type="radio" id="author" name="column" value="author" />
                 <label for="author">Author</label>
-                <p><input type="radio" id="author" name="column" value="Title" />
-                <label for="Title">Title</label>
                 <p><input type="radio" id="ISBN" name="column" value="ISBN" />
                 <label for="ISBN">ISBN</label>
                 <p><input type=submit value=Search>

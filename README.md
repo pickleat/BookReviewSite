@@ -2,23 +2,32 @@
 
 Web Programming with Python and JavaScript
 
+# Objectives:
+Over the course of this assignment I spent many hours reading and researching the documentation around Flask, Jinja2, PostgreSQL, Heroku, and HTML/CSS. It has taught me a lot about HOW to look for help and answers. This project has given me so much confidence that with enough time and energy I can create dynamic sites with Flask/Jinja2/Python.
+
 # Todos:
-**Login/Registration Functionality**
+**Login/Out/Registration Functionality**
 > Registration: Users should be able to register for your website, providing (at minimum) a username and password.
+- [x] Registration - check if username is taken or not.
+- [x] Users are able to create a simple username and password (added a disclaimer that this site is not about security, so don't use a real password)
 > Login: Users, once registered, should be able to log in to your website with their username and password.
-> Logout: Logged in users should be able to log out of the site.
-- [x] Initial Login/ needs better functionality. 
-- [x] Login Database: created user database, but probably not in its complete form. Jsust a simple username/password/id setup currently. 
 - [x] Not logged in redirect to login/registration page
-- [x] Registration - check if username is taken or not. 
+- [x] Initial Login/ needs better functionality. 
+- [x] Login Database: created user database, but probably not in its complete form. Just a simple username/password/id setup currently. 
+> Logout: Logged in users should be able to log out of the site.
+- [x] Users are able to logout with one click on any page
 
 **Import Books.csv**
 > Import: Provided for you in this project is a file called books.csv, which is a spreadsheet in CSV format of 5000 different books. Each one has an ISBN nubmer, a title, an author, and a publication year. In a Python file called import.py separate from your web application, write a program that will take the books and import them into your PostgreSQL database. You will first need to decide what table(s) to create, what columns those tables should have, and how they should relate to one another. Run this program by running python3 import.py to import the books into your database, and submit this program with the rest of your project code.
-- [x] Import.py finished. Had to figure out how to skip the initial header lines. Although, there may be a future issue with the ISBN's as some have an "X" in the final value.
+- [x] Import.py finished. 
+    - [x] Figure out how to skip the initial header lines. 
+    - [x] ISBN's are treated as strings because of "x" found in many ISBNs.
+
 **Search**
 > Search: Once a user has logged in, they should be taken to a page where they can search for a book. Users should be able to type in the ISBN number of a book, the title of a book, or the author of a book. After performing the search, your website should display a list of possible matching results, or some sort of message if there were no matches. If the user typed in only part of a title, ISBN, or author name, your search page should find matches for those as well!
 - [x] Search via ISBN/Title/Author, should dynamically respond with appropriate title(s) 
-Note: not sure the database function is working perfectly. Used '%' for the before and after as well as 'ilike' but it doesn't perfectly return all searched results. 
+    - [x] Used '%' for the before and after as well 
+    - [x] Also used 'ilike' but it doesn't perfectly return all searched results. 
 
 **Book Page**
 > Book Page: When users click on a book from the results of the search page, they should be taken to a book page, with details about the book: its title, author, publication year, ISBN number, and any reviews that users have left for the book on your website.
@@ -48,11 +57,7 @@ Note: not sure the database function is working perfectly. Used '%' for the befo
 
 
 **Other Info**
-You should be using raw SQL commands (as via SQLAlchemy’s execute method) in order to make database queries. You should not use the SQLAlchemy ORM (if familiar with it) for this project.
-In README.md, include a short writeup describing your project, what’s contained in each file, and (optionally) any other additional information the staff should know about your project.
-If you’ve added any Python packages that need to be installed in order to run your web application, be sure to add them to requirements.txt!
-Beyond these requirements, the design, look, and feel of the website are up to you! You’re also welcome to add additional features to your website, so long as you meet the requirements laid out in the above specification!
 
-Hints
-At minimum, you’ll probably want at least one table to keep track of users, one table to keep track of books, and one table to keep track of reviews. But you’re not limited to just these tables, if you think others would be helpful!
-In terms of how to “log a user in,” recall that you can store information inside of the session, which can store different values for different users. In particular, if each user has an id, then you could store that id in the session (e.g., in session["user_id"]) to keep track of which user is currently logged in.
+I used a **create.sql** page (as shown in the lecture) to document how the database tables were created and relate to each other.
+
+Originally the HTML/CSS formatting was done with Bootstrap, but I found it to be buggy and not as flexible as I would like. So I implemented my own custom CSS with Sass and .scss file which gave more customization and a better look and feel.

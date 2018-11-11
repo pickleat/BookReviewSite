@@ -2,16 +2,77 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Montserrat", sans-serif;
 }
 
+@media (min-width: 601px) {
+  h1 {
+    font-size: 48px;
+  }
+}
+@media (max-width: 600px) {
+  h1 {
+    font-size: 36px;
+  }
+}
+
+@media (min-width: 601px) {
+  h2 {
+    font-size: 0.75em;
+  }
+}
+@media (max-width: 600px) {
+  h2 {
+    font-size: 0.75em;
+  }
+}
+
 p {
   font-family: "Merriweather", serif;
+  font-size: 12px;
 }
 
 body {
-  background-color: antiquewhite;
+  background-color: #fcf8f3;
+  padding: 12px;
 }
 
 nav {
-  background-color: navy;
+  font-family: "Montserrat", sans-serif;
+  /* Change the link color to #111 (black) on hover */
+}
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+nav li {
+  float: left;
+}
+nav li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+nav li a:hover {
+  background-color: #6a6a6a;
+}
+
+table {
+  font-family: "Montserrat", sans-serif;
+  width: 75%;
+  text-align: left;
+}
+table tr, table td {
+  padding-left: 2px;
+  border-bottom: 1px solid #333;
+}
+table tr a, table td a {
+  color: #333;
+}
+table tr a:hover, table td a:hover {
+  color: #6a6a6a;
 }
 
 /*# sourceMappingURL=main.css.map */

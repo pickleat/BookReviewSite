@@ -19,7 +19,7 @@
         
         {% for item in query %}
         <tr>
-        <td>{{ item.title }}</td>
+        <td><a href="/{{ item.isbn }}">{{ item.title }}</a></td>
         <td>{{ item.author }}</td>
         <td>{{ item.year }}</td>
         <td><a href="/{{ item.isbn }}">{{ item.isbn }}</a></td>

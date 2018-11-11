@@ -3,7 +3,7 @@
 {% block heading %}
 <div class="container">
     {% for item in book %}    
-    <h1>Welcome to the page for {{ item.title }}</h1>
+    <h1>{{ item.title }}</h1>
     
     {% endfor %}
 </div>     
@@ -14,7 +14,7 @@
         {% endif %}
 
 <div class="container">     
-    <table style="width:50%">
+    <table style="width: 100%">
         <tr>
             <th>Title</th>
             <th>Author</th>
@@ -34,7 +34,7 @@
         {% endfor %}
         
         
-    <table style="width:50%">
+    <table>
         <tr>
             <th>User</th>
             <th>Stars</th>
@@ -72,7 +72,7 @@
             <p>
             <input style="width:50%" type="text" name="review" id='review' placeholder="Type your thoughts on the book">
             </p>
-            <p><input type=submit value=Search>
+            <p><input type=submit value=Submit>
         </div>
         {% with messages = get_flashed_messages() %}
         {% if messages %}

@@ -5,14 +5,71 @@ h1, h2, h3, h4, h5, h6 {
     font-family: $HeadFont;
 }
 
+h1 {
+    @media (min-width: 601px) {
+        font-size: 48px;
+    }
+    @media (max-width: 600px) {
+        font-size: 36px;
+    }
+}
+h2 {
+    @media (min-width: 601px) {
+        font-size: .75em;
+    }
+    @media (max-width: 600px) {
+        font-size: .75em;
+    }
+}
 p {
     font-family: $SecondFont;
+    font-size: 12px;
 }
 
 body {
-    background-color: antiquewhite;
+    background-color: rgb(252, 248, 243);
+    padding: 12px;
 }
 
 nav {
-    background-color: navy;
+    font-family: $HeadFont;
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+    
+    li {
+        float: left;
+    }
+    
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+    
+    /* Change the link color to #111 (black) on hover */
+    li a:hover {
+        background-color: rgb(106, 106, 106);
+    }
+}
+table {
+    font-family: $HeadFont;
+    width: 75%; 
+    text-align: left;
+    tr, td {
+        padding-left: 2px;
+        border-bottom: 1px solid #333;
+        a {
+            color: #333;
+        }
+        a:hover {
+            color: rgb(106, 106, 106);
+        }
+    }
 }
